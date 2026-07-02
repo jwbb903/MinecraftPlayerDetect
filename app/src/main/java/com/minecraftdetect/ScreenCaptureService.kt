@@ -34,6 +34,7 @@ class ScreenCaptureService : Service() {
     private var captureThread: HandlerThread? = null
     private var captureHandler: Handler? = null
     private var detector: PlayerDetector? = null
+    private var mediaProjectionCallback: android.media.projection.MediaProjection.Callback? = null
     private val isRunning = AtomicBoolean(false)
 
     override fun onCreate() {
@@ -54,12 +55,14 @@ class ScreenCaptureService : Service() {
 
         val projectionManager = getSystemService(MEDIA_PROJECTION_SERVICE) as android.media.projection.MediaProjectionManager
         mediaProjection = projectionManager.getMediaProjection(resultCode, data)
-        mediaProjection?.registerCallback(object : android.media.projection.MediaProjection.Callback() {
+        val callback = object : android.media.projection.MediaProjection.Callback() {
             override fun onStop() {
                 Log.d(TAG, "MediaProjection stopped")
                 stopCapture()
             }
-        }, null)
+        }
+        mediaProjectionCallback = callback
+        mediaProjection?.registerCallback(callback, null)
 
         val notification = Notification.Builder(this, CHANNEL_ID)
             .setContentTitle("Minecraft Detect")
@@ -164,7 +167,8 @@ class ScreenCaptureService : Service() {
     override fun onDestroy() {
         stopCapture()
         mediaProjection?.stop()
-        mediaProjection?.unregisterCallback(null)
+        mediaProjectionCallback?.let { mediaProjection?.unregisterCallback(it) }
+        mediaProjectionCallback = null
         mediaProjection = null
         detector?.close()
         detector = null
