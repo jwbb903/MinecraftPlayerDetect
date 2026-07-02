@@ -6,7 +6,6 @@ import android.util.Log
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.gpu.CompatibilityList
 import org.tensorflow.lite.gpu.GpuDelegate
-import org.tensorflow.lite.gpu.GpuDelegateFactory
 import java.io.FileInputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -35,9 +34,9 @@ class PlayerDetector(context: Context) {
                 val compatList = CompatibilityList()
                 if (compatList.isDelegateSupportedOnThisDevice) {
                     val delegate = GpuDelegate(
-                        GpuDelegateFactory.Options().apply {
+                        GpuDelegate.Options().apply {
                             setPrecisionLossAllowed(true)
-                            setInferencePreference(GpuDelegateFactory.Options.INFERENCE_PREFERENCE_SUSTAINED_SPEED)
+                            setInferencePreference(GpuDelegate.Options.INFERENCE_PREFERENCE_SUSTAINED_SPEED)
                         }
                     )
                     addDelegate(delegate)

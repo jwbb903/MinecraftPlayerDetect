@@ -45,4 +45,5 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.tensorflow.lite)
+    implementation(libs.tensorflow.lite.gpu)
 }
