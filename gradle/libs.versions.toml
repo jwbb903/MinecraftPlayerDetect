@@ -1,0 +1,20 @@
+[versions]
+agp = "8.2.2"
+kotlin = "1.9.22"
+core = "1.12.0"
+activity = "1.8.2"
+appcompat = "1.6.1"
+tflite = "2.14.0"
+lifecycle = "2.7.0"
+
+[libraries]
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+tensorflow-lite = { group = "org.tensorflow", name = "tensorflow-lite", version.ref = "tflite" }
+tensorflow-lite-gpu = { group = "org.tensorflow", name = "tensorflow-lite-gpu", version.ref = "tflite" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
