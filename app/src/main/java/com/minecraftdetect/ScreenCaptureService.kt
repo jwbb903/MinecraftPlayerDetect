@@ -47,7 +47,7 @@ class ScreenCaptureService : Service() {
         val resultCode = intent?.getIntExtra("resultCode", -1) ?: -1
         val data = intent?.getParcelableExtra("data", android.content.Intent::class.java)
 
-        if (resultCode == -1 || data == null) {
+        if (data == null) {
             Log.e(TAG, "Invalid MediaProjection data")
             stopSelf()
             return START_NOT_STICKY
