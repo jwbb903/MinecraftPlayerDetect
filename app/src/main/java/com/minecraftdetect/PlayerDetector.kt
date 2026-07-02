@@ -4,8 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import org.tensorflow.lite.Interpreter
-import org.tensorflow.lite.gpu.CompatibilityList
-import org.tensorflow.lite.gpu.GpuDelegate
 import java.io.FileInputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -28,23 +26,6 @@ class PlayerDetector(context: Context) {
         val model = loadModelFile(context)
         val options = Interpreter.Options().apply {
             setNumThreads(4)
-
-            // Try GPU delegate for faster inference
-            try {
-                val compatList = CompatibilityList()
-                if (compatList.isDelegateSupportedOnThisDevice) {
-                    val delegate = GpuDelegate(
-                        GpuDelegate.Options().apply {
-                            setPrecisionLossAllowed(true)
-                            setInferencePreference(GpuDelegate.Options.INFERENCE_PREFERENCE_SUSTAINED_SPEED)
-                        }
-                    )
-                    addDelegate(delegate)
-                    Log.i(TAG, "GPU delegate enabled")
-                }
-            } catch (e: Exception) {
-                Log.w(TAG, "GPU delegate not available, using CPU", e)
-            }
         }
         interpreter = Interpreter(model, options)
     }
